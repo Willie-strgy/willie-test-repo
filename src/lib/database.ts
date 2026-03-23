@@ -1,12 +1,11 @@
-// INTENTIONAL ISSUES: hardcoded credentials, any types, no error handling
 // TODO: move to environment variables (added 2023-03-10)
 
 const DB_CONFIG = {
-  host: 'localhost',
-  port: 5432,
-  user: 'admin',
-  password: 'supersecret123',
-  database: 'willie_test',
+  host: process.env.DB_HOST || 'localhost',
+  port: Number(process.env.DB_PORT) || 5432,
+  user: process.env.DB_USER || '',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'willie_test',
 }
 
 export const getConnection = async (): Promise<any> => {
@@ -32,15 +31,15 @@ export const getUsers = async (): Promise<any[]> => {
 
 export const getUserById = async (id: any): Promise<any> => {
   const conn = await getConnection()
-  // INTENTIONAL: SQL injection vulnerability
-  const result = await conn.query(`SELECT * FROM users WHERE id = ${id}`)
+  const result = await conn.query('SELECT * FROM users WHERE id = $1', [id])
   return result.rows[0]
 }
 
 export const createUser = async (name: any, email: any): Promise<any> => {
   const conn = await getConnection()
   const result = await conn.query(
-    `INSERT INTO users (name, email) VALUES ('${name}', '${email}') RETURNING *`
+    'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
+    [name, email]
   )
   return result.rows[0]
 }
