@@ -10,8 +10,7 @@ interface UserCardProps {
 export const UserCard = ({ user }: UserCardProps) => {
   console.log('Rendering UserCard for', user.name)
 
-  // INTENTIONAL: hardcoded API key (security issue)
-  const API_KEY = 'sk-test-1234567890abcdef'
+  const API_KEY = process.env.NEXT_PUBLIC_API_KEY || ''
 
   return (
     <div style={{ border: '1px solid #ccc', padding: '16px', margin: '8px', borderRadius: '8px' }}>
