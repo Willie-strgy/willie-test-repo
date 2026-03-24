@@ -1,23 +1,20 @@
-// INTENTIONAL ISSUES: moment (heavy dep), any types, missing return types
 import moment from 'moment'
 
-export const formatDate = (date: any) => {
+export const formatDate = (date: string | Date | null | undefined): string => {
   if (!date) return 'N/A'
   return moment(date).format('MMMM Do, YYYY')
 }
 
-export const formatCurrency = (amount: any) => {
-  return '$' + parseFloat(amount).toFixed(2)
+export const formatCurrency = (amount: number | string): string => {
+  return '$' + parseFloat(String(amount)).toFixed(2)
 }
 
-// INTENTIONAL: duplicated logic — same as formatDate but slightly different
-export const formatDateShort = (date: any) => {
+export const formatDateShort = (date: string | Date | null | undefined): string => {
   if (!date) return 'N/A'
   return moment(date).format('MM/DD/YYYY')
 }
 
-// INTENTIONAL: overly complex function that could be simplified
-export const formatUserName = (firstName: any, lastName: any, middleName: any) => {
+export const formatUserName = (firstName: string | null, lastName: string | null, middleName: string | null): string => {
   let result = ''
   if (firstName) {
     result = result + firstName
@@ -33,6 +30,3 @@ export const formatUserName = (firstName: any, lastName: any, middleName: any) =
   }
   return result
 }
-
-// INTENTIONAL: unused export
-export const DEPRECATED_DATE_FORMAT = 'DD-MM-YYYY'
